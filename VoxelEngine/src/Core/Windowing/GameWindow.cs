@@ -1,9 +1,11 @@
 using Silk.NET.Input;
 using Silk.NET.OpenGL;
 using Silk.NET.Windowing;
+using VoxelEngine.AssetManagement;
 using VoxelEngine.Core.Input;
 using VoxelEngine.Rendering;
 using VoxelEngine.SceneManagement;
+using Shader = VoxelEngine.Rendering.Shaders.Shader;
 
 namespace VoxelEngine.Core.Windowing;
 
@@ -13,8 +15,10 @@ public class GameWindow
     private InputManager _inputManager = null!;
     private GL _gl = null!;
     
-    private Renderer? _renderer;
-    private Scene? _currentScene;
+    private Renderer _renderer = null!;
+    private Scene _currentScene = null!;
+    
+    private AssetManager _assetManager;
 
     public GameWindow()
     {
@@ -34,6 +38,12 @@ public class GameWindow
         _gl = GL.GetApi(_window);
         _gl.ClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         
+        // Asset Manager
+        _assetManager = new AssetManager();
+        // Resource Loader
+        var resourceLoader = new ResourceLoader(_gl, _assetManager);
+        resourceLoader.LoadAll("../../../src/Resources");
+        
         // Renderer setup
         _renderer = new Renderer(_gl);
         // Scene setup
@@ -47,10 +57,10 @@ public class GameWindow
     private void OnRender(double delta)
     {
         // Delegate screen clear to renderer
-        _renderer?.ClearScreen(0.1f, 0.1f, 0.1f, 1.0f);
+        _renderer.ClearScreen(0.1f, 0.1f, 0.1f, 1.0f);
         
         // Delegate rendering to the scene
-        _currentScene?.Render(_renderer);
+        _currentScene.Render(_renderer);
     }
 
     private void OnUpdate(double delta)
