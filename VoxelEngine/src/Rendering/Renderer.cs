@@ -1,5 +1,6 @@
 using Silk.NET.OpenGL;
 using VoxelEngine.Rendering.Models;
+using Shader = VoxelEngine.Rendering.Shaders.Shader;
 
 namespace VoxelEngine.Rendering
 {

@@ -8,6 +8,6 @@ namespace VoxelEngine.Core.Input
         void Initialize(IWindow window);
         bool IsKeyPressed(Key key);
         bool IsKeyReleased(Key key);
-        void Update();
+        void Clear();
     }
 }

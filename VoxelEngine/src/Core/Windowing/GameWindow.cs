@@ -1,3 +1,4 @@
+using Silk.NET.Input;
 using Silk.NET.OpenGL;
 using Silk.NET.Windowing;
 using VoxelEngine.Core.Input;
@@ -9,8 +10,8 @@ namespace VoxelEngine.Core.Windowing;
 public class GameWindow
 {
     private readonly IWindow _window;
-    private InputManager? _inputManager;
-    private GL? _gl;
+    private InputManager _inputManager = null!;
+    private GL _gl = null!;
     
     private Renderer? _renderer;
     private Scene? _currentScene;
@@ -48,13 +49,18 @@ public class GameWindow
         // Delegate screen clear to renderer
         _renderer?.ClearScreen(0.1f, 0.1f, 0.1f, 1.0f);
         
-        // Delegate rendering ot the scene
+        // Delegate rendering to the scene
         _currentScene?.Render(_renderer);
     }
 
     private void OnUpdate(double delta)
     {
-        _inputManager?.Update();
+        if (_inputManager.IsKeyPressed(Key.Escape))
+        {
+            _window.Close();
+        }
+        
+        _inputManager.Clear();
     }
 
     public void Run() => _window.Run();

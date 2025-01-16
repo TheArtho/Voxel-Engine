@@ -30,7 +30,7 @@ namespace VoxelEngine.Rendering.Shaders
             _gl.ShaderSource(shader, source);
             _gl.CompileShader(shader);
 
-            // Vérification des erreurs
+            // Verify errors
             var infoLog = _gl.GetShaderInfoLog(shader);
             if (!string.IsNullOrEmpty(infoLog))
             {

@@ -16,7 +16,7 @@ namespace VoxelEngine.SceneManagement
             _renderables.Remove(renderable);
         }
 
-        public void Render(Renderer? renderer)
+        public void Render(Renderer renderer)
         {
             foreach (var renderable in _renderables)
             {

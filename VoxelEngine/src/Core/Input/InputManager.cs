@@ -8,6 +8,7 @@ namespace VoxelEngine.Core.Input
         private IInputContext? _inputContext;
         private IKeyboard? _keyboard;
 
+        private readonly HashSet<Key> _keysDown = [];
         private readonly HashSet<Key> _keysPressed = [];
         private readonly HashSet<Key> _keysReleased = [];
 
@@ -25,14 +26,17 @@ namespace VoxelEngine.Core.Input
         private void OnKeyDown(IKeyboard sender, Key key, int scancode)
         {
             _keysPressed.Add(key);
+            _keysDown.Add(key);
         }
 
         private void OnKeyUp(IKeyboard sender, Key key, int scancode)
         {
-            _keysPressed.Remove(key);
+            _keysDown.Remove(key);
             _keysReleased.Add(key);
         }
 
+        public bool IsKeyDown(Key key) => _keysDown.Contains(key);
+        
         public bool IsKeyPressed(Key key) => _keysPressed.Contains(key);
 
         public bool IsKeyReleased(Key key)
@@ -44,8 +48,9 @@ namespace VoxelEngine.Core.Input
 
         }
 
-        public void Update()
+        public void Clear()
         {
+            _keysPressed.Clear();
             _keysReleased.Clear();
         }
     }
