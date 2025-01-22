@@ -21,7 +21,7 @@ namespace VoxelEngine.Core
                 if (File.Exists(vertexPath) && File.Exists(fragmentPath))
                 {
                     var shader = new Shader(gl, vertexPath, fragmentPath);
-                    assetManager.RegisterAsset(name, new ShaderAsset(name, shader));
+                    assetManager.RegisterAsset(prefix, new ShaderAsset(name, shader));
                     Console.WriteLine($"Loaded Shader: {prefix}_vertex and {prefix}_fragment");
                 }
                 else
@@ -44,7 +44,7 @@ namespace VoxelEngine.Core
 
         private void LoadMeshes(string directoryPath)
         {
-            foreach (var filePath in Directory.GetFiles(directoryPath, "*.obj"))
+            foreach (var filePath in Directory.GetFiles(directoryPath, "*.fbx"))
             {
                 var name = Path.GetFileNameWithoutExtension(filePath);
                 var mesh = Mesh.LoadFromFile(gl, filePath);

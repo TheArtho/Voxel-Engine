@@ -95,6 +95,8 @@ namespace VoxelEngine.Rendering.Models
         {
             var context = new AssimpContext();
 
+            Assimp.Unmanaged.AssimpLibrary.Instance.LoadLibrary("/opt/homebrew/lib/libassimp.dylib");   // TODO change this force load
+            
             // Load the file
             var scene = context.ImportFile(filePath, PostProcessSteps.Triangulate /* | PostProcessSteps.GenerateSmoothNormals */);
 

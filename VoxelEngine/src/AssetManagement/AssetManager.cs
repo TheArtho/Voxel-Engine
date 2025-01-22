@@ -2,7 +2,14 @@ namespace VoxelEngine.AssetManagement
 {
     public class AssetManager
     {
+        public static AssetManager Instance { get; private set; }
+        
         private readonly Dictionary<Type, Dictionary<string, IAsset>> _assets = new();
+
+        public AssetManager()
+        {
+            Instance = this;
+        }
 
         public void RegisterAsset<T>(string name, T asset) where T : IAsset
         {

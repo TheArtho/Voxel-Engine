@@ -1,3 +1,4 @@
+using System.Numerics;
 using Silk.NET.Input;
 using Silk.NET.OpenGL;
 using Silk.NET.Windowing;
@@ -5,7 +6,7 @@ using VoxelEngine.AssetManagement;
 using VoxelEngine.Core.Input;
 using VoxelEngine.Rendering;
 using VoxelEngine.SceneManagement;
-using Shader = VoxelEngine.Rendering.Shaders.Shader;
+using Silk.NET.Maths;
 
 namespace VoxelEngine.Core.Windowing;
 
@@ -14,16 +15,17 @@ public class GameWindow
     private readonly IWindow _window;
     private InputManager _inputManager = null!;
     private GL _gl = null!;
-    
     private Renderer _renderer = null!;
     private Scene _currentScene = null!;
-    
-    private AssetManager _assetManager;
+    private AssetManager _assetManager = null!;
+    private Camera _camera = null!;
+
+    private readonly Vector2D<int> _resolution = new Vector2D<int>(1280, 720);
 
     public GameWindow()
     {
         var options = WindowOptions.Default;
-        options.Size = new Silk.NET.Maths.Vector2D<int>(1280, 720);
+        options.Size = _resolution;
         options.Title = "Voxel GL";
 
         _window = Window.Create(options);
@@ -52,12 +54,15 @@ public class GameWindow
         // Input Manager setup
         _inputManager = new InputManager();
         _inputManager.Initialize(_window);
+
+        _camera = new Camera(new Vector3(0, 0, -10), Vector3.UnitZ, Vector3.UnitY, (float) _resolution.X / _resolution.Y);
     }
 
     private void OnRender(double delta)
     {
         // Delegate screen clear to renderer
-        _renderer.ClearScreen(0.1f, 0.1f, 0.1f, 1.0f);
+        // _renderer.ClearScreen(0.1f, 0.1f, 0.1f, 1.0f);
+        _renderer.ClearScreen(0.0f, 0.0f, 0.0f, 1.0f);
         
         // Delegate rendering to the scene
         _currentScene.Render(_renderer);
@@ -69,6 +74,8 @@ public class GameWindow
         {
             _window.Close();
         }
+        
+        _currentScene.OnUpdate((float) delta);
         
         _inputManager.Clear();
     }

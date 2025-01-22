@@ -5,12 +5,19 @@ namespace VoxelEngine.Core.Input
 {
     public class InputManager : IInputManager
     {
+        public static InputManager Instance { get; private set; }
+        
         private IInputContext? _inputContext;
         private IKeyboard? _keyboard;
 
         private readonly HashSet<Key> _keysDown = [];
         private readonly HashSet<Key> _keysPressed = [];
         private readonly HashSet<Key> _keysReleased = [];
+
+        public InputManager()
+        {
+            Instance = this;
+        }
 
         public void Initialize(IWindow window)
         {
